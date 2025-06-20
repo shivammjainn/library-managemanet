@@ -6,7 +6,7 @@ import { ReactNode } from 'react';
 
 export default function ClientLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const hideHeader = pathname === '/login'; // Or '/login', based on your route
+  const hideHeader = pathname === '/login';
 
   return (
     <>

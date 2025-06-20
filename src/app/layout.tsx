@@ -25,7 +25,7 @@ import ClientLayout from "@/components/ClientLayout";
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html>
-      <body>
+      <body className="bg-white">
         <AuthProvider>
           <ClientLayout>
           {children}
