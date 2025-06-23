@@ -1,5 +1,5 @@
+import { books } from '@/constants/books';
 import { NextRequest, NextResponse } from 'next/server';
-import { books } from '@/constants/Books';
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,27 +12,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const newId = books.length > 0 ? books[books.length - 1].id + 1 : 1;
-
-    books.push({
-      id: newId,
-      name,
-      description,
-      author,
-    });
+    const newBook = { id: books.length+1, name, description, author };
+    books.push(newBook)
 
     return NextResponse.json(
-      { 
-        message: 'Book added successfully',
-        book: { id: newId, name, description, author }
-      },
+      { message: 'Book added successfully', book: newBook },
       { status: 200 }
     );
   } catch (error) {
-    console.error('Error adding book:', error);
-    return NextResponse.json(
-      { message: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: 'Internal error' }, { status: 500 });
   }
 }

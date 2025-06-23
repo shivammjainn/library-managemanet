@@ -1,9 +1,4 @@
-export interface Book {
-  id: number;
-  name: string;
-  description: string;
-  author: string;
-}
+import { Book } from "@/components/types/types";
 
 export const books: Book[] = [
   {
@@ -37,3 +32,6 @@ export const books: Book[] = [
     author: "J.D. Salinger"
   }
 ];
+
+
+

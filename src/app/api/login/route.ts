@@ -1,28 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 
-const KEY = "shivam";
+const KEY = process.env.JWT_SECRET;
+
+if (!KEY) {
+  throw new Error("JWT_SECRET is not defined in environment variables");
+}
 
 export async function POST(req: NextRequest) {
-  const body = await req.formData();
+  try {
+    const body = await req.json();
+    const { username, password } = body;
 
-  const username = body.get('username');
-  const password = body.get('password');
+    if (!username || !password) {
+      return NextResponse.json({ error: 'Missing credentials' }, { status: 400 });
+    }
 
-  if (!username || !password) {
-    return NextResponse.json({ error: 'Missing credentials' }, { status: 400 });
+    const isAdmin = username === "admin" && password === "admin";
+
+    const token = jwt.sign(
+      {
+        username,
+        admin: isAdmin,
+      },
+      KEY,
+      { expiresIn: '1h' } 
+    );
+
+    return NextResponse.json({ token });
+
+  } catch (error) {
+    return NextResponse.json({ error: `Internal server error: ${error}` }, { status: 500 });
   }
-
-  const isAdmin = username === "admin" && password === "admin";
-
-  const token = jwt.sign(
-    {
-      username,
-      admin: isAdmin,
-    },
-    KEY,
-    { expiresIn: 100}
-  );
-
-  return NextResponse.json({ token });
 }

@@ -1,10 +1,9 @@
-import AddBook from "@/components/AddBook";
-import BookList from "@/components/BookList";
-import Image from "next/image";
+import AddBook from "@/components/add-book";
+import BookList from "@/components/book-list";
 
 export default function Home() {
   return (
-    <div className="m-8 bg-white" >
+    <div className="bg-white" >
     <AddBook/>
     <BookList/>
     </div>

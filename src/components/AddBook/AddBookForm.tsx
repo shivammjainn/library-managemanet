@@ -8,7 +8,7 @@ export default function AddBookForm() {
     description: '',
     author: ''
   })
-  const [loading, setLoading] = useState(false)
+  const [_loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const router = useRouter()
 
@@ -36,8 +36,6 @@ export default function AddBookForm() {
       if (response.ok) {
         setMessage('Book added successfully!')
         setFormData({ name: '', description: '', author: '' })
-        
-        
           router.push('/')
         
       } else {
@@ -46,7 +44,6 @@ export default function AddBookForm() {
       }
     } catch (error) {
       setMessage('Network error occurred')
-      console.error('Error:', error)
     } finally {
       setLoading(false)
     }
@@ -105,40 +102,3 @@ export default function AddBookForm() {
     </div>
   )
 }
-
-
-
-// export default function AddBookForm(){
-//   const [bookName,setBookName]=useState('');
-//   const [desc,setDesc]=useState('');
-//   const [authorName,setAuthorName]=useState('');
-
-//   async function addBook(){
-//     var formDataa=new FormData();
-//     formDataa.append("book name",bookName);
-//     formDataa.append("AUTHOR name",authorName);
-//     formDataa.append("description",desc);
-//     console.log(formDataa);
-
-//     const res=await fetch("/api/add-book"),{
-//       method:"POST",
-//       body:formDataa,
-//     }
-
-//   }
-
-
-//   return(
-//     <div>
-//       <form onSubmit={e=>e.preventDefault()}>
-//         <label>Book name</label>
-//         <input type="text" name="book name" value={bookName} onChange={e=>setBookName(e.target.value)}/>
-//         <label>description</label>
-//         <input type="text" name="book name" value={desc} onChange={e=>setDesc(e.target.value)}/>
-//         <label>Author Name</label>
-//         <input type="text" name="book name" value={authorName} onChange={e=>setAuthorName(e.target.value)}/>
-//         <input type="button" value="add book" onClick={addBook}/>
-//       </form>
-//     </div>
-//   )
-// }
