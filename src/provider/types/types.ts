@@ -6,5 +6,5 @@ export type User = {
 
 export type AuthContextType = {
   user: User;
-  setUser: (user: User) => void;
+  isAdmin:boolean;
 };

@@ -1,15 +1,13 @@
-import { books } from '@/constants/books';
+import pool from '@/lib/db';
 import { NextResponse } from 'next/server';
 
-export function GET() {
+export async function GET(){
   try{
-    return NextResponse.json({ data: books, status: 200 });
+    const result=await pool.query("SELECT * FROM public.book_table ORDER BY id ASC")
+    const books= result.rows;
+    return NextResponse.json({data:books,status:200});
   }
-  catch(error){
-    return NextResponse.json({
-      message:'failed to fetch books'
-    },
-  {status:500}
-  )
+  catch(err){
+    return NextResponse.json({ error: "Database error" }, { status: 500 });
   }
 }

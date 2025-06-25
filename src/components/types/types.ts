@@ -1,9 +1,12 @@
 export type Book = {
   id: number;
-  name: string;
+  book_name: string;
   description: string;
-  author: string;
+  book_author: string;
+  detail:string;
 };
 export type BookItemProps = {
   book: Book;
+  onDelete: (id: number) => void;
+  refreshBooks:()=>void;
 };

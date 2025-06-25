@@ -2,18 +2,35 @@
 
 import { useEffect, useState } from "react";
 import BookItem from "./book-item"; 
-import {Book} from './types/types'
+import { Book } from "./types/types";
+import { NextResponse } from "next/server";
+
 export default function BookList() {
   const [bookList, setBookList] = useState<Book[]>([]);
 
+  const refreshBooks = async () => {
+    const res = await fetch("/api/get-books");
+    const json = await res.json();
+    const books = json.data;
+    setBookList(books);
+  };
+
   useEffect(() => {
-    const fetchBooks = async () => {
-      const res = await fetch("/api/get-books");
-      const response = await res.json();
-      setBookList(response.data);
-    };
-    fetchBooks();
+    refreshBooks();
   }, []);
+
+  const handleDelete = async (id: number) => {
+    const res = await fetch(`/api/delete-book?id=${id}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      await refreshBooks();
+    } else {
+      const err = await res.json();
+      NextResponse.json({message:err},{status:500})
+    }
+  };
 
   return (
     <div className="p-6">
@@ -30,8 +47,13 @@ export default function BookList() {
             </tr>
           </thead>
           <tbody>
-            {bookList?.map((book) => (
-              <BookItem key={book.id} book={book} />
+            {bookList.map((book) => (
+              <BookItem
+                key={book.id}
+                book={book}
+                onDelete={handleDelete}
+                refreshBooks={refreshBooks}
+              />
             ))}
           </tbody>
         </table>

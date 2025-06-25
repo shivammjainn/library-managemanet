@@ -6,7 +6,8 @@ export default function AddBookForm() {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    author: ''
+    author: '',
+    detail:''
   })
   const [_loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
@@ -35,7 +36,7 @@ export default function AddBookForm() {
 
       if (response.ok) {
         setMessage('Book added successfully!')
-        setFormData({ name: '', description: '', author: '' })
+        setFormData({ name: '', description: '', author: '' ,detail:''})
           router.push('/')
         
       } else {
@@ -76,6 +77,14 @@ export default function AddBookForm() {
           value={formData.author}
           onChange={handleChange}
           placeholder="Author Name"
+          required
+          className="w-full p-2 rounded border border-black"
+        />
+        <textarea
+          name="detail"
+          value={formData.detail}
+          onChange={handleChange}
+          placeholder="detail"
           required
           className="w-full p-2 rounded border border-black"
         />

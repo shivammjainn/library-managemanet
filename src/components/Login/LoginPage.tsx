@@ -2,15 +2,16 @@
 
 import { useState } from "react"
 import jwt from 'jsonwebtoken'
-import { useRouter } from "next/navigation"
+import useCustomAuth from "@/hooks/useCustomAuth"
 
 export default function LoginPage() {
+
+  // const {isAdmin}=useCustomAuth();
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   })
   const [errmsg, setErrmsg] = useState('')
-  const router = useRouter()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -43,7 +44,6 @@ export default function LoginPage() {
       })
 
       const data = await res.json()
-
       if (!res.ok || !data.token) {
         setErrmsg(data.message || "Invalid credentials.")
         return
@@ -64,10 +64,10 @@ export default function LoginPage() {
 
       if (decoded.admin) {
         localStorage.setItem("token", token)
-        router.push("/")
+        window.location.href='/';
       } else {
-        setErrmsg("Access denied: Not an admin user")
-        router.push("/login")
+        localStorage.setItem("token", token)
+        window.location.href='/';
       }
 
     } catch (err) {
