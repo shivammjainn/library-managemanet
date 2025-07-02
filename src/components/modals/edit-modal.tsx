@@ -11,14 +11,47 @@ import {
 import { Button } from "../ui/button";
 import { Edit } from "lucide-react";
 import { useState } from "react";
-import { Book } from "../types/types"; // adjust path
+import { Book } from "../types/types";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { NextResponse } from "next/server";
+import { Checkbox } from "../ui/checkbox";
+import { z } from "zod";
 
 type EditModalProps = {
   book: Book;
   onConfirm: () => void;
 };
+const bookSchema = z.object({
+  name: z
+    .string()
+    .min(1, 'Book name is required')
+    .refine(val => /^[A-Za-z]/.test(val), {
+      message: 'Book name must start with a letter',
+    }),
+
+  description: z
+    .string()
+    .min(1, 'Description is required')
+    .refine(val => /^[A-Za-z]/.test(val), {
+      message: 'Description must start with a letter',
+    }),
+
+  author: z
+    .string()
+    .min(1, 'Author name is required')
+    .refine(val => /^[A-Za-z]/.test(val), {
+      message: 'Author name must start with a letter',
+    }),
+
+  detail: z
+    .string()
+    .min(1, 'Detail is required')
+    .refine(val => /^[A-Za-z]/.test(val), {
+      message: 'Detail must start with a letter',
+    }),
+
+  available: z.boolean(),
+})
 
 export default function EditModal({ book, onConfirm }: EditModalProps) {
   const [open, setOpen] = useState(false);
@@ -26,10 +59,17 @@ export default function EditModal({ book, onConfirm }: EditModalProps) {
     name: book.book_name,
     description: book.description,
     author: book.book_author,
-    detail:book.detail,
+    detail: book.detail,
+    available: book.available,
   });
+  const [validationErrors, setValidationErrors] = useState('')
+  const [nameErrors, setNameErrors] = useState<string[]>([])
+  const [descriptionErrors, setDescriptionErrors] = useState<string[]>([])
+  const [authorErrors, setAuthorErrors] = useState<string[]>([])
+  const [detailErrors, setDetailErrors] = useState<string[]>([])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -37,6 +77,33 @@ export default function EditModal({ book, onConfirm }: EditModalProps) {
   };
 
   const submitForm = async () => {
+    setNameErrors([])
+    setDescriptionErrors([])
+    setAuthorErrors([])
+    setDetailErrors([])
+    const validation = bookSchema.safeParse(formData)
+    if (!validation.success) {
+      const issues = validation.error.issues
+
+      const nameErrs: string[] = []
+      const descErrs: string[] = []
+      const authorErrs: string[] = []
+      const detailErrs: string[] = []
+
+      issues.forEach((issue) => {
+        const field = issue.path[0]
+        if (field === 'name') nameErrs.push(issue.message)
+        if (field === 'description') descErrs.push(issue.message)
+        if (field === 'author') authorErrs.push(issue.message)
+        if (field === 'detail') detailErrs.push(issue.message)
+      })
+
+      setNameErrors(nameErrs)
+      setDescriptionErrors(descErrs)
+      setAuthorErrors(authorErrs)
+      setDetailErrors(detailErrs)
+      return
+    }
     try {
       const res = await fetch(`/api/update-book?id=${book.id}`, {
         method: "PUT",
@@ -48,13 +115,13 @@ export default function EditModal({ book, onConfirm }: EditModalProps) {
 
       if (!res.ok) {
         const err = await res.json();
-        return NextResponse.json({err,status:500});
+        return NextResponse.json({ err, status: 500 });
       }
 
-      onConfirm(); 
+      onConfirm();
       setOpen(false);
     } catch (err) {
-      return NextResponse.json({err,status:500})
+      return NextResponse.json({ err, status: 500 })
     }
   };
 
@@ -64,7 +131,7 @@ export default function EditModal({ book, onConfirm }: EditModalProps) {
         <Button
           variant="secondary"
           size="icon"
-          className="mx-2 rounded-lg size-8 bg-blue-500"
+          className="mx-2 rounded-lg size-8 bg-blue-300"
         >
           <Edit />
         </Button>
@@ -84,6 +151,9 @@ export default function EditModal({ book, onConfirm }: EditModalProps) {
               value={formData.name}
               className="border border-black rounded px-2"
             />
+            {nameErrors[0] && (
+              <p className="text-xs text-red-600 ml-1">{nameErrors[0]}</p>
+            )}
           </div>
           <div className="grid gap-3">
             <label htmlFor="description">Description</label>
@@ -94,6 +164,9 @@ export default function EditModal({ book, onConfirm }: EditModalProps) {
               value={formData.description}
               className="border border-black rounded px-2"
             />
+            {descriptionErrors[0] && (
+              <p className="text-xs text-red-600 ml-1">{descriptionErrors[0]}</p>
+            )}
           </div>
           <div className="grid gap-3">
             <label htmlFor="author">Author Name</label>
@@ -104,17 +177,45 @@ export default function EditModal({ book, onConfirm }: EditModalProps) {
               value={formData.author}
               className="border border-black rounded px-2"
             />
+            {authorErrors[0] && (
+              <p className="text-xs text-red-600 ml-1">{authorErrors[0]}</p>
+            )}
           </div>
           <div className="grid gap-3">
             <label htmlFor="description">About book</label>
-            <input
+            <textarea
               onChange={handleChange}
               id="detail"
               name="detail"
               value={formData.detail}
+              rows={3}
               className="border border-black rounded px-2"
             />
+            {detailErrors[0] && (
+              <p className="text-xs text-red-600 ml-1">{detailErrors[0]}</p>
+            )}
           </div>
+          <div>
+            <Checkbox
+              checked={formData.available}
+              onCheckedChange={(checked) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  available: Boolean(checked),
+                }))
+              }
+              className="border border-black mr-2"
+            /><label>Is this book available</label>
+          </div>
+
+        </div>
+        <div>
+          {validationErrors && (
+            <div className="mt-4 p-4 bg-red-50 text-red-700 border border-red-300 rounded-md space-y-1">
+              {validationErrors}
+
+            </div>
+          )}
         </div>
         <DialogFooter className="flex justify-between pt-4">
           <button
@@ -129,7 +230,9 @@ export default function EditModal({ book, onConfirm }: EditModalProps) {
           >
             Cancel
           </button>
+
         </DialogFooter>
+
       </DialogContent>
     </Dialog>
   );

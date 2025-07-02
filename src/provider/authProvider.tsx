@@ -4,7 +4,7 @@ import {
   useContext,
   ReactNode,
 } from 'react';
-import {  AuthContextType, User } from '@/provider/types/types';
+import {  AuthContextType } from '@/provider/types/types';
 import useCustomAuth from '@/hooks/useCustomAuth';
 
 const AuthContext = createContext<AuthContextType>({

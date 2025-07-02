@@ -4,9 +4,10 @@ import { ReactNode } from 'react';
 import Header from './Header';
 import LoginPage from './Login/LoginPage';
 import useCustomAuth from '@/hooks/useCustomAuth';
+import SideBar from './SideBar/side-bar';
 
 export default function ClientLayout({ children }: { children: ReactNode }) {
-  const {loading,isAuthenticated}=useCustomAuth();
+  const { loading, isAuthenticated } = useCustomAuth();
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -21,8 +22,17 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <Header />
-      {children}
+      <div className='flex'>
+        <div className='border-r-1 w-1/12'>
+          <SideBar />
+        </div>
+        <div className='w-full h-screen'>
+
+          <Header />
+          {children}
+        </div>
+
+      </div>
     </>
   );
 }

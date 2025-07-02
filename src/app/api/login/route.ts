@@ -1,23 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import pool from '@/lib/db';
-
+import bcrypt from 'bcrypt';
 const KEY = process.env.JWT_SECRET;
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { username, password } = body;
-
-    if (!username || !password) {
-      return NextResponse.json({ error: 'Missing credentials' }, { status: 400 });
+    const { email, password } = body;
+    if (!email || !password) {
+      return NextResponse.json({ error: 'Missing credentials' }, { status: 500 });
     }
 
-    const isAdmin = username === "admin" && password === "admin";
+    const userQuery = 'SELECT * FROM public.users WHERE email = $1'
+    const result = await pool.query(userQuery, [email]);
+    if (result.rows.length === 0) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
 
-    const userQuery = `INSERT INTO public.user_table (name, "isAdmin") VALUES ($1, $2) RETURNING *`;
-    const result = await pool.query(userQuery, [username, isAdmin]);
+    const user = result.rows[0];
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
+    }
 
+    const isAdmin = user.role === 'admin';
+    const username=user.email;
     const token = jwt.sign(
       {
         username,

@@ -1,63 +1,85 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import BookItem from "./book-item"; 
+import BookItem from "./book-item";
 import { Book } from "./types/types";
 import { NextResponse } from "next/server";
+import useCustomAuth from "@/hooks/useCustomAuth";
+import DataTable from "./data-table";
+import EditModal from "./modals/edit-modal";
+import DeleteModal from "./modals/delete-modal";
+import DetailModal from "./modals/detail-modal";
 
 export default function BookList() {
   const [bookList, setBookList] = useState<Book[]>([]);
 
+  const { isAdmin, loading } = useCustomAuth();
   const refreshBooks = async () => {
+
+
     const res = await fetch("/api/get-books");
     const json = await res.json();
-    const books = json.data;
+    let books = json.data;
+    if (!isAdmin) {
+      books = books.filter((book: any) => book.available === true);
+    }
     setBookList(books);
   };
 
   useEffect(() => {
-    refreshBooks();
-  }, []);
+    if (!loading) {
+
+      refreshBooks();
+    }
+  }, [isAdmin, loading]);
 
   const handleDelete = async (id: number) => {
-    const res = await fetch(`/api/delete-book?id=${id}`, {
-      method: "DELETE",
-    });
+    try {
+      const res = await fetch(`/api/delete-book?id=${id}`, {
+        method: "DELETE",
+      });
 
-    if (res.ok) {
-      await refreshBooks();
-    } else {
-      const err = await res.json();
-      NextResponse.json({message:err},{status:500})
+      if (res.ok) {
+        await refreshBooks();
+      } else {
+        const err = await res.json();
+        NextResponse.json({ message: err }, { status: 500 })
+      }
+    } catch (err) {
+      NextResponse.json({ message: "error deleteing book", err }, { status: 500 })
     }
+
   };
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl text-black font-bold mb-4">Library Books</h2>
-      <div className="overflow-x-auto">
-        <table className="min-w-full border border-gray-300 shadow-md rounded-lg">
-          <thead className="bg-gray-800 text-white text-left">
-            <tr>
-              <th className="px-4 py-2 border-b">ID</th>
-              <th className="px-4 py-2 border-b">Name</th>
-              <th className="px-4 py-2 border-b">Description</th>
-              <th className="px-4 py-2 border-b">Author</th>
-              <th className="px-4 py-2 border-b">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {bookList.map((book) => (
-              <BookItem
-                key={book.id}
-                book={book}
-                onDelete={handleDelete}
-                refreshBooks={refreshBooks}
-              />
-            ))}
-          </tbody>
-        </table>
-      </div>
+
+      <DataTable
+        title="📚 Library Books"
+        columns={["ID", "Book Name", "Description", "Book Author"]}
+        isAdmin={true}
+        data={bookList}
+        lastcolumnName="Actions"
+        lastColumn={(book) => (
+          <>
+            {
+              isAdmin && (
+                <>
+                  <EditModal book={book} onConfirm={refreshBooks} />
+                  <DeleteModal onConfirm={() => handleDelete(book.id)} />
+                  <DetailModal book={book} />
+                </>
+              )
+
+            }
+            {!isAdmin && (
+              <DetailModal book={book} />
+            )}
+          </>
+        )}
+      />
+
     </div>
+
   );
 }

@@ -10,17 +10,17 @@ export async function PUT(req: NextRequest) {
   }
   
   const body = await req.json();
-  const { name, description, author,detail } = body;
+  const { name, description, author,detail,available } = body;
   try {
     if (!name || !description || !author) {
     return NextResponse.json({ message: "All fields are required" }, { status: 400 });
   }
     const result = await pool.query(
       `UPDATE public.book_table
-       SET book_name = $1, description = $2, book_author = $3, detail=$4
-       WHERE id = $5
+       SET book_name = $1, description = $2, book_author = $3, detail=$4,available=$5
+       WHERE id = $6
        RETURNING *;`,
-      [name, description, author,detail, id]
+      [name, description, author,detail,available, id]
     );
 
     if (result.rowCount === 0) {
@@ -31,8 +31,4 @@ export async function PUT(req: NextRequest) {
   } catch (err) {
     return NextResponse.json({ error: "Database error"+err },{ status: 500 });
   }
-  
-  
-
-
 }

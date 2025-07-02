@@ -5,7 +5,7 @@ import pool from '@/lib/db';
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, description, author,detail } = await req.json();
+    const { name, description, author,detail,available } = await req.json();
 
     if (!name || !description || !author|| !detail) {
       return NextResponse.json(
@@ -19,14 +19,13 @@ export async function POST(req: NextRequest) {
     const newId = Number(maxId) + 1;
 
     const insertQuery = `
-      INSERT INTO public.book_table (id, book_name, description, book_author,detail)
-      VALUES ($1, $2, $3, $4,$5)
+      INSERT INTO public.book_table (id, book_name, description, book_author,detail,available)
+      VALUES ($1, $2, $3, $4, $5,$6)
       RETURNING *;
     `;
 
-    const result = await pool.query(insertQuery, [newId, name, description, author,detail]);
+    const result = await pool.query(insertQuery, [newId, name, description, author,detail,available]);
     const newBook = result.rows[0];
-
     return NextResponse.json(
       { message: 'Book added successfully', book: newBook },
       { status: 200 }

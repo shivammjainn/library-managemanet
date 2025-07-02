@@ -18,32 +18,34 @@ export default function DetailModal({book}:DetailModalProps) {
   const [open,setOpen]=useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <form>
-        <DialogTrigger asChild>
-          <Button size="icon" variant="secondary" className="mx-1 rounded-lg size-8 border border-black bg-white text-black">
-            
-            <Eye />
-            
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle className="text-gray-400 mb-6">Book Detail</DialogTitle>
-            <DialogDescription className="text-black">
-             {book.detail}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4">
-            <div className="grid gap-3">
-            </div>
-            <div className="grid gap-3">
-            </div>
-          </div>
-          <DialogFooter>
-              <Button onClick={()=>setOpen(false)} variant="outline">Cancel</Button>
-          </DialogFooter>
-        </DialogContent>
-      </form>
-    </Dialog>
+  <DialogTrigger asChild>
+    <Button
+      size="icon"
+      variant="secondary"
+      className="mx-1 rounded-lg size-8 border border-black bg-white text-black"
+    >
+      <Eye />
+    </Button>
+  </DialogTrigger>
+
+  <DialogContent className="sm:max-w-[600px] p-6 rounded-xl shadow-lg">
+    <DialogHeader>
+      <DialogTitle className="text-xl font-semibold text-gray-700 mb-4">📖 Book Details</DialogTitle>
+      <DialogDescription className="text-base text-gray-600 leading-relaxed">
+        {book.detail}
+      </DialogDescription>
+    </DialogHeader>
+
+    <div className="grid gap-6">
+    </div>
+
+    <DialogFooter className="mt-6">
+      <Button onClick={() => setOpen(false)} variant="outline" className="rounded-md">
+        Close
+      </Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+
   )
 }
