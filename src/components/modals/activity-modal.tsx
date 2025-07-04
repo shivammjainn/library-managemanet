@@ -2,13 +2,11 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { NextResponse } from "next/server";
 
-
 type ActivityModalProps = {
     disable: boolean;
     email: string;
     onConfirm: () => void;
 }
-
 
 export default function ActivityModal({ disable, email, onConfirm }: ActivityModalProps) {
     const handleDisable = async () => {

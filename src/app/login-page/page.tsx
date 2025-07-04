@@ -1,7 +1,6 @@
-import LoginPage from "@/components/Login/LoginPage";
+import LoginPage from "@/components/login/login-page";
 
-export default function home() {
-
+export default function LoginPageMain() {
     return (
         <LoginPage />
     )

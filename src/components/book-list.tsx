@@ -1,7 +1,5 @@
 "use client";
-
 import { useEffect, useState } from "react";
-import BookItem from "./book-item";
 import { Book } from "./types/types";
 import { NextResponse } from "next/server";
 import useCustomAuth from "@/hooks/useCustomAuth";
@@ -54,19 +52,16 @@ export default function BookList() {
         columns={["ID", "Book Name", "Description", "Book Author"]}
         isAdmin={true}
         data={bookList}
-        lastcolumnName="Actions"
-        lastColumn={(book) => (
+        extraColumnName="Actions"
+        extraFunction={(book) => (
           <>
-            {
-              isAdmin && (
-                <>
-                  <EditModal book={book} onConfirm={refreshBooks} />
-                  <DeleteModal onConfirm={() => handleDelete(book.id)} />
-                  <DetailModal book={book} />
-                </>
-              )
-
-            }
+            {isAdmin && (
+              <div className="mr-20">
+                <EditModal book={book} onConfirm={refreshBooks} />
+                <DeleteModal onConfirm={() => handleDelete(book.id)} />
+                <DetailModal book={book} />
+              </div>
+            )}
             {!isAdmin && (
               <DetailModal book={book} />
             )}

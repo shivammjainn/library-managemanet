@@ -34,10 +34,12 @@ export async function POST(req: NextRequest) {
     }
 
     const isAdmin = user.role === "admin";
-    const username = user.email;
+    const username = user.name;
+    const userEmail = user.email;
     const token = jwt.sign(
       {
         username,
+        userEmail,
         admin: isAdmin,
       },
       KEY!,

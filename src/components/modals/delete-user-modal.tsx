@@ -14,7 +14,6 @@ type DeleteUserModalProps = {
     email: any,
     onConfirm: () => void
 }
-
 export default function DeleteUserModal({ email, onConfirm }: DeleteUserModalProps) {
 
     const handleDeleteUser = async (email: string) => {

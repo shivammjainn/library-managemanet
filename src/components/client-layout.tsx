@@ -1,10 +1,9 @@
 'use client'
-
 import { ReactNode } from 'react';
-import Header from './Header';
-import LoginPage from './Login/LoginPage';
+import Header from './header';
+import LoginPage from './login/login-page';
 import useCustomAuth from '@/hooks/useCustomAuth';
-import SideBar from './SideBar/side-bar';
+import SideBar from './sidebar/side-bar';
 
 export default function ClientLayout({ children }: { children: ReactNode }) {
   const { loading, isAuthenticated } = useCustomAuth();
@@ -15,7 +14,6 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
       </div>
     );
   }
-
   if (!isAuthenticated) {
     return <LoginPage />;
   }
@@ -30,7 +28,6 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
           <Header />
           {children}
         </div>
-
       </div>
     </>
   );

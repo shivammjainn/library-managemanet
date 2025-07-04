@@ -1,34 +1,36 @@
 import { ReactNode } from "react";
-import { z } from "zod";
 
 export type Book = {
   id: number;
   book_name: string;
   description: string;
   book_author: string;
-  detail:string;
-  available:boolean;
+  detail: string;
+  available: boolean;
 };
-export type User={
-  name:string;
-  email:string;
-  password:string;
-  role:'user'|'admin';
-
+export enum Role {
+  USER = "user",
+  ADMIN = "admin",
 }
+
+export type User = {
+  name: string;
+  email: string;
+  password: string;
+  role: Role;
+};
+
 export type BookItemProps = {
   book: Book;
   onDelete: (id: number) => void;
-  refreshBooks:()=>void;
+  refreshBooks: () => void;
 };
 
 export type TBreadCrumbProps = {
-    homeElement: ReactNode,
-    separator: ReactNode,
-    containerClasses?: string,
-    listClasses?: string,
-    activeClasses?: string,
-    capitalizeLinks?: boolean
-}
-
-
+  homeElement: ReactNode;
+  separator: ReactNode;
+  containerClasses?: string;
+  listClasses?: string;
+  activeClasses?: string;
+  capitalizeLinks?: boolean;
+};

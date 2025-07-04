@@ -1,5 +1,4 @@
 import Image from "next/image"
-import library_logo from "../../../public/library_logo.jpg"
 export default function Logo() {
     return (
         <div className="logo border-b-1 border-gray-300 flex justify-center">
@@ -8,7 +7,7 @@ export default function Logo() {
                 alt="Library Logo"
                 height={10}
                 width={180}
-                className=" h-14"
+                className="h-14"
             />
         </div>
     );

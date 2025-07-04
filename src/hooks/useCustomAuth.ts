@@ -26,10 +26,11 @@ export default function useCustomAuth() {
 
       if (decoded && decoded.exp > now) {
         const username = decoded.username;
+        const userEmail = decoded.userEmail;
         setIsAuthenticated(true);
         setUser({ username: decoded.username, admin: decoded.admin });
 
-        fetch(`/api/get-role?email=${encodeURIComponent(username)}`)
+        fetch(`/api/get-role?email=${encodeURIComponent(userEmail)}`)
           .then((res) => res.json())
           .then((data) => {
             if (data?.role === "admin") {

@@ -3,45 +3,12 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Plus, StepBack } from 'lucide-react'
 import { Checkbox } from '../ui/checkbox'
-import { z } from 'zod'
-
-const bookSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Book name is required")
-    .refine(val => /^[A-Za-z]/.test(val), {
-      message: 'Book name must start with a letter',
-    }),
-
-  description: z
-    .string()
-    .min(1, 'Description is required')
-    .refine(val => /^[A-Za-z]/.test(val), {
-      message: 'Description must start with a letter',
-    }),
-
-  author: z
-    .string()
-    .min(1, 'Author name is required')
-    .refine(val => /^[A-Za-z]/.test(val), {
-      message: 'Author name must start with a letter',
-    }),
-
-  detail: z
-    .string()
-    .min(1, 'Detail is required')
-    .refine(val => /^[A-Za-z]/.test(val), {
-      message: 'Detail must start with a letter',
-    }),
-
-  available: z.boolean(),
-})
+import { bookSchema } from './schema'
 
 export default function AddBookForm() {
 
   const router = useRouter()
   const handleBack = () => router.back()
-
   const [formData, setFormData] = useState({
     name: '',
     description: '',

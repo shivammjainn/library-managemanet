@@ -1,5 +1,5 @@
 'use client'
-import AddBookForm from "@/components/AddBook/add-book-form";
+import AddBookForm from "@/components/add-book/add-book-form";
 import { useAuth } from "@/provider/authProvider";
 import NotFound from "@/app/not-found";
 

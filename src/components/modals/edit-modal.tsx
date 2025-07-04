@@ -15,43 +15,13 @@ import { Book } from "../types/types";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { NextResponse } from "next/server";
 import { Checkbox } from "../ui/checkbox";
-import { z } from "zod";
+import { bookSchema } from "../add-book/schema";
 
 type EditModalProps = {
   book: Book;
   onConfirm: () => void;
 };
-const bookSchema = z.object({
-  name: z
-    .string()
-    .min(1, 'Book name is required')
-    .refine(val => /^[A-Za-z]/.test(val), {
-      message: 'Book name must start with a letter',
-    }),
 
-  description: z
-    .string()
-    .min(1, 'Description is required')
-    .refine(val => /^[A-Za-z]/.test(val), {
-      message: 'Description must start with a letter',
-    }),
-
-  author: z
-    .string()
-    .min(1, 'Author name is required')
-    .refine(val => /^[A-Za-z]/.test(val), {
-      message: 'Author name must start with a letter',
-    }),
-
-  detail: z
-    .string()
-    .min(1, 'Detail is required')
-    .refine(val => /^[A-Za-z]/.test(val), {
-      message: 'Detail must start with a letter',
-    }),
-
-  available: z.boolean(),
-})
 
 export default function EditModal({ book, onConfirm }: EditModalProps) {
   const [open, setOpen] = useState(false);

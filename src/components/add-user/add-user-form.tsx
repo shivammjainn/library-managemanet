@@ -2,26 +2,12 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { StepBack, UserPlus } from 'lucide-react'
-import { z } from 'zod'
+import { signupSchema } from './schema'
 
-const signupSchema = z.object({
-    name: z.string().min(4, 'Minimum 4 letters are required'),
-    email: z.string().email('Invalid email address'),
-    password: z
-        .string()
-        .min(8, 'Password must be at least 8 characters long')
-        .refine(val => /[A-Z]/.test(val), {
-            message: 'Password must contain at least one uppercase letter',
-        })
-        .refine(val => /[^A-Za-z0-9]/.test(val), {
-            message: 'Password must contain at least one special character',
-        }),
-})
 
 export default function AddUserForm() {
     const router = useRouter()
     const handleBack = () => router.back()
-
     const [formData, setFormData] = useState({
         name: '',
         email: '',

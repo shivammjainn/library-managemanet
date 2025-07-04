@@ -1,24 +1,7 @@
 'use client'
-
+import { loginSchema, signupSchema } from "./schema";
 import { useState } from "react"
 import jwt from 'jsonwebtoken'
-import { z } from "zod"
-
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z
-    .string()
-    .min(8, 'Password must be at least 8 characters long')
-    .refine(val => /[A-Z]/.test(val), {
-      message: 'Password must contain at least one uppercase letter',
-    })
-    .refine(val => /[^A-Za-z0-9]/.test(val), {
-      message: 'Password must contain at least one special character'
-    }),
-})
-const signupSchema = loginSchema.extend({
-  name: z.string().min(4, 'Minimum 4 letters are required'),
-})
 export default function LoginPage() {
   const [nameErrors, setNameErrors] = useState<string[]>([])
   const [emailErrors, setEmailErrors] = useState<string[]>([])
@@ -166,7 +149,7 @@ export default function LoginPage() {
 
   return (
     <div className="h-screen grid place-items-center bg-gray-50 pb-28 px-4">
-      <div className="w-full max-w-md bg-white rounded-3xl shadow-lg border border-gray-200 p-8 ">
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-lg border border-gray-200 p-8">
         <div className="mb-6 text-center">
           {newUser && (<h1 className="text-3xl font-bold text-gray-800">📚 Library Registration
           </h1>)}

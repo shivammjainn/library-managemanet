@@ -10,7 +10,6 @@ type EditUserModalProps = {
     email: string;
     onConfirm: () => void;
 }
-
 export default function EditUserModal({ name, email, onConfirm }: EditUserModalProps) {
     const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState(
@@ -67,6 +66,7 @@ export default function EditUserModal({ name, email, onConfirm }: EditUserModalP
                 </DialogTrigger>
                 <DialogDescription></DialogDescription>
                 <DialogContent>
+
                     <DialogHeader>
                         <DialogTitle>Update User Detail</DialogTitle>
                     </DialogHeader>
