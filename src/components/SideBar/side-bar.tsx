@@ -11,9 +11,7 @@ export default function SideBar() {
     return (
         <div className="side-bar flex flex-col justify-between h-screen">
             <div>
-                <div>
-                    <Logo />
-                </div>
+                <Logo />
                 <div className="mt-4 gap-y-4 ">
                     <div className="my-1">
                         <Button className="w-full bg-white hover:bg-gray-300 text-black" asChild>

@@ -131,8 +131,7 @@ export default function EditModal({ book, onConfirm }: EditModalProps) {
         <Button
           variant="secondary"
           size="icon"
-          className="mx-2 rounded-lg size-8 bg-blue-300"
-        >
+          className="mx-2 rounded-lg size-8 bg-blue-300">
           <Edit />
         </Button>
       </DialogTrigger>
@@ -149,8 +148,7 @@ export default function EditModal({ book, onConfirm }: EditModalProps) {
               id="name"
               name="name"
               value={formData.name}
-              className="border border-black rounded px-2"
-            />
+              className="border border-black rounded px-2" />
             {nameErrors[0] && (
               <p className="text-xs text-red-600 ml-1">{nameErrors[0]}</p>
             )}
@@ -162,8 +160,7 @@ export default function EditModal({ book, onConfirm }: EditModalProps) {
               id="description"
               name="description"
               value={formData.description}
-              className="border border-black rounded px-2"
-            />
+              className="border border-black rounded px-2" />
             {descriptionErrors[0] && (
               <p className="text-xs text-red-600 ml-1">{descriptionErrors[0]}</p>
             )}
@@ -175,8 +172,7 @@ export default function EditModal({ book, onConfirm }: EditModalProps) {
               id="author"
               name="author"
               value={formData.author}
-              className="border border-black rounded px-2"
-            />
+              className="border border-black rounded px-2" />
             {authorErrors[0] && (
               <p className="text-xs text-red-600 ml-1">{authorErrors[0]}</p>
             )}
@@ -189,8 +185,7 @@ export default function EditModal({ book, onConfirm }: EditModalProps) {
               name="detail"
               value={formData.detail}
               rows={3}
-              className="border border-black rounded px-2"
-            />
+              className="border border-black rounded px-2" />
             {detailErrors[0] && (
               <p className="text-xs text-red-600 ml-1">{detailErrors[0]}</p>
             )}
@@ -204,8 +199,8 @@ export default function EditModal({ book, onConfirm }: EditModalProps) {
                   available: Boolean(checked),
                 }))
               }
-              className="border border-black mr-2"
-            /><label>Is this book available</label>
+              className="border border-black mr-2" />
+            <label>Is this book available</label>
           </div>
 
         </div>
@@ -213,24 +208,22 @@ export default function EditModal({ book, onConfirm }: EditModalProps) {
           {validationErrors && (
             <div className="mt-4 p-4 bg-red-50 text-red-700 border border-red-300 rounded-md space-y-1">
               {validationErrors}
-
             </div>
           )}
         </div>
+
         <DialogFooter className="flex justify-between pt-4">
           <button
+            type="submit"
             onClick={submitForm}
-            className="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-400"
-          >
+            className="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-400">
             Update Changes
           </button>
           <button
             onClick={() => setOpen(false)}
-            className="bg-black px-4 py-2 text-white rounded hover:bg-gray-700"
-          >
+            className="bg-black px-4 py-2 text-white rounded hover:bg-gray-700">
             Cancel
           </button>
-
         </DialogFooter>
 
       </DialogContent>

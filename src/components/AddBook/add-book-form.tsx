@@ -138,7 +138,6 @@ export default function AddBookForm() {
         </div>
 
         <form onSubmit={handleSubmit} className="mt-6">
-
           <div className="mb-4">
             <input
               type="text"

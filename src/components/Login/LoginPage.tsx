@@ -69,9 +69,9 @@ export default function LoginPage() {
       })
 
       const data = await res.json()
-
-      if (!res.ok || !data.token) {
-        setErrmsg(data.message || "User Does not exist click on Register.")
+      console.log("data from DB to FE", data);
+      if (data.error) {
+        setErrmsg(data.error)
         return
       }
 

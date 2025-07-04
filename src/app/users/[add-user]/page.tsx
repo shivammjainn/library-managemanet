@@ -5,17 +5,13 @@ import useCustomAuth from "@/hooks/useCustomAuth";
 
 export default function AddUserPage() {
     const { isAdmin, loading } = useCustomAuth();
-
-
     if (loading) {
         return
     }
     return (
         <div>
             {isAdmin && (
-                <div>
-                    <AddUserForm />
-                </div>
+                <AddUserForm />
             )}
             {!isAdmin && (
                 <NotFound />

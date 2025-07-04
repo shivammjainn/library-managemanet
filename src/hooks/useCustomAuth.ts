@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 import { User } from "@/provider/types/types";
 
 export default function useCustomAuth() {
@@ -11,7 +11,7 @@ export default function useCustomAuth() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
 
     if (!token) {
       setIsAuthenticated(false);
@@ -25,36 +25,36 @@ export default function useCustomAuth() {
       const now = Math.floor(Date.now() / 1000);
 
       if (decoded && decoded.exp > now) {
-        const username = decoded.username; 
+        const username = decoded.username;
         setIsAuthenticated(true);
         setUser({ username: decoded.username, admin: decoded.admin });
 
         fetch(`/api/get-role?email=${encodeURIComponent(username)}`)
-          .then(res => res.json())
-          .then(data => {
-            if (data?.role === 'admin') {
+          .then((res) => res.json())
+          .then((data) => {
+            if (data?.role === "admin") {
               setIsAdmin(true);
             } else {
               setIsAdmin(false);
             }
           })
-          .catch(err => {
-            console.error('Error fetching role:', err);
+          .catch((err) => {
+            console.error("Error fetching role:", err);
             setIsAdmin(false);
           })
           .finally(() => {
             setLoading(false);
           });
       } else {
-        localStorage.removeItem('token');
+        localStorage.removeItem("token");
         setIsAuthenticated(false);
         setUser(null);
         setIsAdmin(false);
         setLoading(false);
       }
     } catch (err) {
-      console.error('Token decode error:', err);
-      localStorage.removeItem('token');
+      console.error("Token decode error:", err);
+      localStorage.removeItem("token");
       setIsAuthenticated(false);
       setUser(null);
       setIsAdmin(false);
@@ -64,5 +64,3 @@ export default function useCustomAuth() {
 
   return { loading, isAuthenticated, user, isAdmin };
 }
-
-

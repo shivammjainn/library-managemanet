@@ -15,6 +15,7 @@ export default function Header() {
       return NextResponse.json({ message: "error", err }, { status: 500 })
     }
   }
+
   return (
     <div className="w-full border-b border-gray-300 bg-white px-6 py-3 shadow-sm flex items-center justify-between text-black">
       <div className="text-lg font-light w-full">
@@ -45,6 +46,7 @@ export default function Header() {
           <span className="font-medium">Logout</span>
           <LogOutIcon className="h-4 w-4" />
         </button>
+
       </div>
     </div>
 

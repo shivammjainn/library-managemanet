@@ -12,11 +12,9 @@ import DetailModal from "./modals/detail-modal";
 
 export default function BookList() {
   const [bookList, setBookList] = useState<Book[]>([]);
-
   const { isAdmin, loading } = useCustomAuth();
+
   const refreshBooks = async () => {
-
-
     const res = await fetch("/api/get-books");
     const json = await res.json();
     let books = json.data;
@@ -28,7 +26,6 @@ export default function BookList() {
 
   useEffect(() => {
     if (!loading) {
-
       refreshBooks();
     }
   }, [isAdmin, loading]);
@@ -48,12 +45,10 @@ export default function BookList() {
     } catch (err) {
       NextResponse.json({ message: "error deleteing book", err }, { status: 500 })
     }
-
   };
 
   return (
     <div className="p-6">
-
       <DataTable
         title="📚 Library Books"
         columns={["ID", "Book Name", "Description", "Book Author"]}
@@ -78,8 +73,6 @@ export default function BookList() {
           </>
         )}
       />
-
     </div>
-
   );
 }

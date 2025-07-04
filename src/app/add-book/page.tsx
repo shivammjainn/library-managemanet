@@ -1,14 +1,14 @@
 'use client'
-import AddBookForm from "@/components/AddBook/AddBookForm";
+import AddBookForm from "@/components/AddBook/add-book-form";
 import { useAuth } from "@/provider/authProvider";
 import NotFound from "@/app/not-found";
 
-export default function Home() {
+export default function AddBook() {
   const { isAdmin } = useAuth();
   return (
-    <div className="">
+    <>
       {isAdmin && <AddBookForm />}
       {!isAdmin && <NotFound />}
-    </div>
+    </>
   );
 }

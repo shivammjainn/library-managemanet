@@ -1,5 +1,3 @@
-
-
 type DataTableProps = {
     title?: string;
     columns: string[];
@@ -7,6 +5,8 @@ type DataTableProps = {
     isAdmin: boolean;
     lastcolumnName?: string;
     lastColumn?: (row: any) => React.ReactNode;
+    extraFunction?: (row: any) => React.ReactNode;
+    extraColumnName?: string;
 
 }
 
@@ -14,9 +14,10 @@ export default function DataTable({
     title,
     columns,
     data,
-    isAdmin,
     lastColumn,
-    lastcolumnName
+    lastcolumnName,
+    extraColumnName,
+    extraFunction
 }: DataTableProps
 ) {
     return (
@@ -31,6 +32,7 @@ export default function DataTable({
                                 <th key={idx} className="px-6 py-3 text-left ">{col}</th>
                             ))}
                             <th className="px-6 py-3 text-start ">{lastcolumnName}</th>
+                            <th className="px-6 py-3 text-start">{extraColumnName}</th>
                         </tr>
                     </thead>
                     <tbody className="text-gray-700 text-sm font-light ">
@@ -45,6 +47,7 @@ export default function DataTable({
                                     );
                                 })}
                                 <td className="px-4 py-2 text-start">{lastColumn?.(row)}</td>
+                                <td className="px-4 py-2 text-start">{extraFunction?.(row)}</td>
                             </tr>
                         ))}
                     </tbody>

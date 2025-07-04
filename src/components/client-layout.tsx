@@ -27,7 +27,6 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
           <SideBar />
         </div>
         <div className='w-full h-screen'>
-
           <Header />
           {children}
         </div>
